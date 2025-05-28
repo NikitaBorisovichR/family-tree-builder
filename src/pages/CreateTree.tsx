@@ -8,6 +8,7 @@ import PersonPreview from "@/components/PersonPreview";
 import { usePersonsData } from "@/hooks/usePersonsData";
 import { useTreeActions } from "@/hooks/useTreeActions";
 import { Person } from "@/types/person";
+import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -218,8 +219,33 @@ const CreateTree = () => {
                   <Separator />
 
                   <div className="flex items-center justify-between">
-                    <Button variant="outline">Экспорт данных</Button>
-                    <Button variant="destructive">Очистить древо</Button>
+                    <div>
+                      <Label>Показать даты рождения</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Отображать даты рождения под именами
+                      </p>
+                    </div>
+                    <Switch />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>Показать фотографии</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Отображать аватары персон в древе
+                      </p>
+                    </div>
+                    <Switch defaultChecked />
+                  </div>
+
+                  <div className="flex items-center justify-between">
+                    <div>
+                      <Label>Компактный вид</Label>
+                      <p className="text-sm text-muted-foreground">
+                        Уменьшить размер узлов для экономии места
+                      </p>
+                    </div>
+                    <Switch />
                   </div>
                 </div>
               </CardContent>
