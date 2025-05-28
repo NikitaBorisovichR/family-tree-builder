@@ -175,18 +175,8 @@ const CreateTree = () => {
       </main>
       <Footer />
     </div>
-            <div className="h-[calc(100vh-300px)] min-h-[500px]">
-              {persons.length > 0 ? (
-                <TreeCanvas
-                  persons={persons}
-                  onSelectPerson={handleSelectPerson}
-                  selectedPersonId={selectedPerson?.id}
-                />
-              ) : (
-                <EmptyTreeState onAddPerson={handleAddPerson} />
-              )}
-            </div>
-          </TabsContent>
+  );
+}
 
           <TabsContent value="details">
             {selectedPerson ? (
