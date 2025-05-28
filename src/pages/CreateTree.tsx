@@ -1,257 +1,134 @@
-import { useToast } from "@/components/ui/use-toast";
+import { useState } from "react";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
-import TreeCanvas from "@/components/TreeCanvas";
-import TreeActions from "@/components/TreeActions";
-import EmptyTreeState from "@/components/EmptyTreeState";
-import PersonPreview from "@/components/PersonPreview";
-import { usePersonsData } from "@/hooks/usePersonsData";
-import { useTreeActions } from "@/hooks/useTreeActions";
-import { Person } from "@/types/person";
-import { Switch } from "@/components/ui/switch";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
-import { Separator } from "@/components/ui/separator";
-import PersonDetailsForm from "@/components/PersonDetailsForm";
+import Icon from "@/components/ui/icon";
 
 const CreateTree = () => {
-  const { toast } = useToast();
-  const { persons, addPerson, updatePerson, removePerson } = usePersonsData();
-  const {
-    selectedPerson,
-    setSelectedPerson,
-    activeTab,
-    setActiveTab,
-    handleSelectPerson,
-    handleAddPerson,
-    handleViewCanvas,
-  } = useTreeActions(addPerson);
+  const [persons, setPersons] = useState([]);
+  const [newPerson, setNewPerson] = useState({ name: "", birthYear: "" });
 
-  const handleUpdatePerson = (updatedPerson: Person) => {
-    updatePerson(updatedPerson);
-    setSelectedPerson(updatedPerson);
-
-    toast({
-      title: "Данные обновлены",
-      description: "Информация о персоне успешно обновлена",
-    });
-  };
-
-  const handleRemovePerson = (personId: string) => {
-    removePerson(personId);
-    setSelectedPerson(null);
-
-    toast({
-      title: "Персона удалена",
-      description: "Персона успешно удалена из родословного древа",
-    });
+  const handleAddPerson = () => {
+    if (newPerson.name) {
+      setPersons((prev) => [
+        ...prev,
+        {
+          id: Date.now().toString(),
+          ...newPerson,
+          birthYear: newPerson.birthYear
+            ? parseInt(newPerson.birthYear)
+            : undefined,
+        },
+      ]);
+      setNewPerson({ name: "", birthYear: "" });
+    }
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-indigo-100">
+    <div className="min-h-screen">
       <Header />
 
-      <main className="container mx-auto px-4 py-8">
-        <div className="max-w-6xl mx-auto">
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold text-gray-900 mb-4">
-              Создание родословного древа
+      <main className="container py-8">
+        <div className="max-w-4xl mx-auto space-y-8">
+          <div className="text-center">
+            <h1 className="text-4xl font-bold mb-4">
+              Создание семейного древа
             </h1>
-            <p className="text-lg text-gray-600">
-              Добавьте членов семьи и создайте свое генеалогическое древо
+            <p className="text-lg text-muted-foreground">
+              Добавьте членов вашей семьи и создайте интерактивное древо
             </p>
           </div>
 
-          <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-            <TabsList className="grid w-full grid-cols-3">
-              <TabsTrigger value="add">Добавить персону</TabsTrigger>
-              <TabsTrigger value="edit">Редактировать</TabsTrigger>
-              <TabsTrigger value="canvas">Просмотр древа</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="add" className="space-y-6">
-              <Card>
-                <CardHeader>
-                  <CardTitle>Добавить нового члена семьи</CardTitle>
-                  <CardDescription>
-                    Заполните основную информацию о персоне
-                  </CardDescription>
-                </CardHeader>
-                <CardContent>
-                  <PersonDetailsForm onSave={handleAddPerson} />
-                </CardContent>
-              </Card>
-            </TabsContent>
-
-            <TabsContent value="edit" className="space-y-6">
-              {persons.length === 0 ? (
-                <EmptyTreeState onAddPerson={() => setActiveTab("add")} />
-              ) : (
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Члены семьи</CardTitle>
-                      <CardDescription>
-                        Выберите персону для редактирования
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent className="space-y-4">
-                      {persons.map((person) => (
-                        <div key={person.id} className="flex items-center justify-between p-4 border rounded-lg hover:bg-gray-50 transition-colors">
-                          <div className="flex-1">
-                            <h3 className="font-medium">{person.name}</h3>
-                            <p className="text-sm text-gray-500">
-                              {person.birthYear && `Год рождения: ${person.birthYear}`}
-                            </p>
-                          </div>
-                          <div className="flex gap-2">
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleSelectPerson(person)}
-                            >
-                              Редактировать
-                            </Button>
-                            <Button
-                              variant="outline"
-                              size="sm"
-                              onClick={() => handleRemovePerson(person.id)}
-                            >
-                              Удалить
-                            </Button>
-                          </div>
-                        </div>
-                      ))}
-                    </CardContent>
-                  </Card>
-
-                  {selectedPerson && (
-                    <Card>
-                      <CardHeader>
-                        <CardTitle>Редактирование персоны</CardTitle>
-                        <CardDescription>
-                          Измените информацию о выбранной персоне
-                        </CardDescription>
-                      </CardHeader>
-                      <CardContent>
-                        <PersonDetailsForm
-                          person={selectedPerson}
-                          onSave={handleUpdatePerson}
-                        />
-                      </CardContent>
-                    </Card>
-                  )}
-                </div>
-              )}
-            </TabsContent>
-
-            <TabsContent value="canvas" className="space-y-6">
-              {persons.length === 0 ? (
-                <EmptyTreeState onAddPerson={() => setActiveTab("add")} />
-              ) : (
-                <Card>
-                  <CardHeader>
-                    <CardTitle>Родословное древо</CardTitle>
-                    <CardDescription>
-                      Визуализация вашего генеалогического древа
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <TreeCanvas persons={persons} />
-                  </CardContent>
-                </Card>
-              )}
-            </TabsContent>
-          </Tabs>
-        </div>
-      </main>
-      <Footer />
-    </div>
-  );
-}
-
-          <TabsContent value="details">
-            {selectedPerson ? (
-              <div className="grid md:grid-cols-3 gap-6">
-                <div className="md:col-span-2">
-                  <PersonDetailsForm
-                    person={selectedPerson}
-                    onUpdate={handleUpdatePerson}
-                    onRemove={() => handleRemovePerson(selectedPerson.id)}
-                    persons={persons}
+          <div className="grid lg:grid-cols-2 gap-8">
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="UserPlus" className="h-5 w-5" />
+                  Добавить члена семьи
+                </CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-4">
+                <div>
+                  <Label htmlFor="name">Имя</Label>
+                  <Input
+                    id="name"
+                    value={newPerson.name}
+                    onChange={(e) =>
+                      setNewPerson((prev) => ({
+                        ...prev,
+                        name: e.target.value,
+                      }))
+                    }
+                    placeholder="Введите имя"
                   />
                 </div>
                 <div>
-                  <PersonPreview person={selectedPerson} />
+                  <Label htmlFor="birthYear">Год рождения</Label>
+                  <Input
+                    id="birthYear"
+                    value={newPerson.birthYear}
+                    onChange={(e) =>
+                      setNewPerson((prev) => ({
+                        ...prev,
+                        birthYear: e.target.value,
+                      }))
+                    }
+                    placeholder="1990"
+                    type="number"
+                  />
                 </div>
-              </div>
-            ) : (
-              <div className="text-center p-8">
-                <p>Выберите персону в древе для редактирования</p>
-              </div>
-            )}
-          </TabsContent>
-
-          <TabsContent value="settings">
-            <Card>
-              <CardHeader>
-                <CardTitle>Настройки древа</CardTitle>
-                <CardDescription>
-                  Настройте параметры отображения вашего семейного древа
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <div>
-                    <Label htmlFor="treeName">Название древа</Label>
-                    <Input id="treeName" placeholder="Моё семейное древо" />
-                  </div>
-
-                  <Separator />
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label>Показать даты рождения</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Отображать даты рождения под именами
-                      </p>
-                    </div>
-                    <Switch />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label>Показать фотографии</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Отображать аватары персон в древе
-                      </p>
-                    </div>
-                    <Switch defaultChecked />
-                  </div>
-
-                  <div className="flex items-center justify-between">
-                    <div>
-                      <Label>Компактный вид</Label>
-                      <p className="text-sm text-muted-foreground">
-                        Уменьшить размер узлов для экономии места
-                      </p>
-                    </div>
-                    <Switch />
-                  </div>
-                </div>
+                <Button onClick={handleAddPerson} className="w-full">
+                  <Icon name="Plus" className="mr-2 h-4 w-4" />
+                  Добавить
+                </Button>
               </CardContent>
             </Card>
-          </TabsContent>
-        </Tabs>
+
+            <Card>
+              <CardHeader>
+                <CardTitle className="flex items-center gap-2">
+                  <Icon name="Users" className="h-5 w-5" />
+                  Члены семьи ({persons.length})
+                </CardTitle>
+              </CardHeader>
+              <CardContent>
+                {persons.length === 0 ? (
+                  <div className="text-center py-8 text-muted-foreground">
+                    <Icon
+                      name="Users"
+                      className="h-12 w-12 mx-auto mb-4 opacity-50"
+                    />
+                    <p>Пока нет добавленных членов семьи</p>
+                  </div>
+                ) : (
+                  <div className="space-y-3">
+                    {persons.map((person) => (
+                      <div
+                        key={person.id}
+                        className="flex items-center gap-3 p-3 border rounded-lg"
+                      >
+                        <div className="w-10 h-10 bg-primary/10 rounded-full flex items-center justify-center">
+                          <Icon name="User" className="h-5 w-5 text-primary" />
+                        </div>
+                        <div className="flex-1">
+                          <p className="font-medium">{person.name}</p>
+                          {person.birthYear && (
+                            <p className="text-sm text-muted-foreground">
+                              Год рождения: {person.birthYear}
+                            </p>
+                          )}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </div>
       </main>
 
       <Footer />

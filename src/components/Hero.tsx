@@ -1,110 +1,90 @@
-import { Link } from 'react-router-dom';
-import { Button } from '@/components/ui/button';
-import { ChevronRight, ArchiveIcon } from 'lucide-react';
+import { Link } from "react-router-dom";
+import { Button } from "@/components/ui/button";
+import Icon from "@/components/ui/icon";
 
 const Hero = () => {
   return (
-    <section className="relative overflow-hidden py-20 md:py-32 bg-background">
-      <div className="container mx-auto px-4 relative z-10">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-          <div>
-            <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-tight mb-6">
-              Откройте историю <span className="text-primary">своей семьи</span>
-            </h1>
-            <p className="text-xl text-muted-foreground mb-8 max-w-xl">
-              Сервис «Семейные корни» поможет вам создать подробное семейное древо, 
-              сохранить важные воспоминания и открыть новые страницы истории вашего рода.
-            </p>
-            <div className="flex flex-wrap gap-4">
-              <Button asChild size="lg">
-                <Link to="/create-tree">
-                  Построить древо
-                  <ChevronRight className="ml-2 h-5 w-5" />
+    <section className="relative py-20 md:py-32 overflow-hidden">
+      <div className="container">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <h1 className="text-4xl md:text-6xl font-bold leading-tight">
+                Создайте историю
+                <span className="text-primary block">вашей семьи</span>
+              </h1>
+              <p className="text-xl text-muted-foreground max-w-lg">
+                Современный инструмент для создания интерактивного семейного
+                древа и сохранения истории ваших предков
+              </p>
+            </div>
+
+            <div className="flex flex-col sm:flex-row gap-4">
+              <Button asChild size="lg" className="text-lg">
+                <Link to="/create">
+                  <Icon name="Plus" className="mr-2 h-5 w-5" />
+                  Создать древо
                 </Link>
               </Button>
-              <Button variant="outline" size="lg" asChild>
-                <Link to="/archives">
-                  <ArchiveIcon className="mr-2 h-5 w-5" />
-                  Найти предка
-                </Link>
+              <Button variant="outline" size="lg" className="text-lg">
+                <Icon name="Play" className="mr-2 h-5 w-5" />
+                Посмотреть демо
               </Button>
             </div>
           </div>
-          
+
           <div className="relative">
-            <div className="w-full aspect-square md:aspect-[4/5] relative">
-              <div className="absolute inset-0 bg-gradient-to-tr from-primary/5 to-secondary/5 rounded-lg"></div>
-              <div className="relative w-full h-full flex items-center justify-center">
-                <div className="family-tree-visual w-[90%] h-[90%] relative bg-[#F5F1EC] rounded-lg p-4">
-                  {/* Визуализация древа с кругами */}
-                  
-                  {/* Главная персона (Вы) */}
-                  <div className="absolute left-1/2 bottom-[20%] transform -translate-x-1/2">
-                    <div className="w-20 h-20 rounded-full bg-white border border-[#D9A799] shadow-sm flex items-center justify-center">
-                      <div className="text-[#2F5542] font-medium">Вы</div>
+            <div className="aspect-square bg-gradient-to-br from-primary/10 to-secondary/10 rounded-3xl p-8">
+              <div className="w-full h-full relative">
+                {/* Семейное древо визуализация */}
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="grid grid-cols-3 gap-4 w-full max-w-sm">
+                    {/* Дедушка и бабушка по маме */}
+                    <div className="space-y-2">
+                      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <Icon name="User" className="h-6 w-6 text-blue-600" />
+                      </div>
+                      <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center">
+                        <Icon name="User" className="h-6 w-6 text-pink-600" />
+                      </div>
+                    </div>
+
+                    {/* Родители */}
+                    <div className="space-y-8 flex flex-col items-center">
+                      <div className="space-y-2">
+                        <div className="w-16 h-16 bg-blue-200 rounded-full flex items-center justify-center">
+                          <Icon name="User" className="h-8 w-8 text-blue-700" />
+                        </div>
+                        <div className="w-16 h-16 bg-pink-200 rounded-full flex items-center justify-center">
+                          <Icon name="User" className="h-8 w-8 text-pink-700" />
+                        </div>
+                      </div>
+
+                      {/* Вы */}
+                      <div className="w-20 h-20 bg-primary/20 rounded-full flex items-center justify-center border-2 border-primary">
+                        <Icon name="User" className="h-10 w-10 text-primary" />
+                      </div>
+                    </div>
+
+                    {/* Дедушка и бабушка по папе */}
+                    <div className="space-y-2">
+                      <div className="w-12 h-12 bg-blue-100 rounded-full flex items-center justify-center">
+                        <Icon name="User" className="h-6 w-6 text-blue-600" />
+                      </div>
+                      <div className="w-12 h-12 bg-pink-100 rounded-full flex items-center justify-center">
+                        <Icon name="User" className="h-6 w-6 text-pink-600" />
+                      </div>
                     </div>
                   </div>
-                  
-                  {/* Родители */}
-                  <div className="absolute left-[30%] bottom-[50%] transform -translate-x-1/2">
-                    <div className="w-20 h-20 rounded-full bg-white border border-[#D9A799] shadow-sm flex items-center justify-center">
-                      <div className="text-[#2F5542] font-medium">Мама</div>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute left-[70%] bottom-[50%] transform -translate-x-1/2">
-                    <div className="w-20 h-20 rounded-full bg-white border border-[#D9A799] shadow-sm flex items-center justify-center">
-                      <div className="text-[#2F5542] font-medium">Папа</div>
-                    </div>
-                  </div>
-                  
-                  {/* Бабушки и дедушки */}
-                  <div className="absolute left-[15%] top-[15%] transform -translate-x-1/2">
-                    <div className="w-16 h-16 rounded-full bg-white border border-[#D9A799] shadow-sm flex items-center justify-center">
-                      <div className="text-[#2F5542] font-medium text-xs">Бабушка</div>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute left-[38%] top-[15%] transform -translate-x-1/2">
-                    <div className="w-16 h-16 rounded-full bg-white border border-[#D9A799] shadow-sm flex items-center justify-center">
-                      <div className="text-[#2F5542] font-medium text-xs">Дедушка</div>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute left-[62%] top-[15%] transform -translate-x-1/2">
-                    <div className="w-16 h-16 rounded-full bg-white border border-[#D9A799] shadow-sm flex items-center justify-center">
-                      <div className="text-[#2F5542] font-medium text-xs">Бабушка</div>
-                    </div>
-                  </div>
-                  
-                  <div className="absolute left-[85%] top-[15%] transform -translate-x-1/2">
-                    <div className="w-16 h-16 rounded-full bg-white border border-[#D9A799] shadow-sm flex items-center justify-center">
-                      <div className="text-[#2F5542] font-medium text-xs">Дедушка</div>
-                    </div>
-                  </div>
-                  
-                  {/* Линии связей - согласно изображению */}
-                  <svg className="absolute inset-0 w-full h-full pointer-events-none">
-                    {/* Линии от бабушек и дедушек к родителям */}
-                    <line x1="15%" y1="15%" x2="30%" y2="50%" stroke="#D9A799" strokeWidth="2" />
-                    <line x1="38%" y1="15%" x2="30%" y2="50%" stroke="#D9A799" strokeWidth="2" />
-                    <line x1="62%" y1="15%" x2="70%" y2="50%" stroke="#D9A799" strokeWidth="2" />
-                    <line x1="85%" y1="15%" x2="70%" y2="50%" stroke="#D9A799" strokeWidth="2" />
-                    
-                    {/* Линии от родителей к главной персоне */}
-                    <line x1="30%" y1="50%" x2="50%" y2="80%" stroke="#D9A799" strokeWidth="2" />
-                    <line x1="70%" y1="50%" x2="50%" y2="80%" stroke="#D9A799" strokeWidth="2" />
-                  </svg>
                 </div>
               </div>
             </div>
+
+            <div className="absolute -top-4 -right-4 w-24 h-24 bg-secondary/20 rounded-full blur-xl"></div>
+            <div className="absolute -bottom-4 -left-4 w-32 h-32 bg-primary/20 rounded-full blur-xl"></div>
           </div>
         </div>
       </div>
-      
-      {/* Декоративные элементы */}
-      <div className="absolute top-1/4 left-0 w-64 h-64 bg-primary/5 rounded-full filter blur-3xl -z-10"></div>
-      <div className="absolute bottom-1/4 right-0 w-80 h-80 bg-secondary/5 rounded-full filter blur-3xl -z-10"></div>
     </section>
   );
 };

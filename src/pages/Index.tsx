@@ -1,21 +1,15 @@
-import Header from '@/components/Header';
-import Hero from '@/components/Hero';
-import FeaturesSection from '@/components/FeaturesSection';
-import StepsSection from '@/components/StepsSection';
-import Testimonials from '@/components/Testimonials';
-import CTASection from '@/components/CTASection';
-import Footer from '@/components/Footer';
+import Header from "@/components/Header";
+import Hero from "@/components/Hero";
+import Features from "@/components/Features";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
-    <div className="min-h-screen flex flex-col">
+    <div className="min-h-screen">
       <Header />
-      <main className="flex-grow">
+      <main>
         <Hero />
-        <FeaturesSection />
-        <StepsSection />
-        <Testimonials />
-        <CTASection />
+        <Features />
       </main>
       <Footer />
     </div>
